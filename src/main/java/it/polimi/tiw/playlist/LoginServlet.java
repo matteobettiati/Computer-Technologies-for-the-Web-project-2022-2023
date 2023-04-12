@@ -38,11 +38,13 @@ public class LoginServlet extends HttpServlet {
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users?serverTimezone=UTC","root","BluBanan69!");
 			
 			java.sql.Statement stm = con.createStatement();
-			String query = "select * from saved_users where username='"+username+"' and password='"+password+"'";
+			String query = "select * from saved_users where username='" + username + "' and password='" + password + "'";
 			ResultSet res = stm.executeQuery(query);
 			
-			if(res.next()) 
+			if(res.next()) {
+				out.print("<h1>" + username + ", welcome back!");
 				response.sendRedirect("homepage.html");	
+			}
 			else {
 				response.sendRedirect("login.html");
 				//out.println("wrong username or password");
