@@ -6,19 +6,53 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
+    <link rel="stylesheet" href="homepage.css">
 </head>
 
 <body>
-    <h1>Welcome back!</h1>
-    <ul>
-        <li><a href="playlist1.html">Playlist1</a></li>
-    </ul>
-    <form>
-        <fieldset>
-            <h3>Create a new playlist</h3>
-            <input type="submit" value="Done">
-        </fieldset>
-    </form>
+    <div class="box">
+        <h1>Welcome back!</h1>
+        <div class="logout">
+            <a href="login.html">Logout</a>
+        </div> 
+        <figure>
+            <figcaption><h2>Your playlist</h2></figcaption>
+            <ul>
+                <li><a href="playlist1.html">Playlist1</a></li>
+            </ul>
+        </figure>
+        <form method="post">
+            <fieldset>
+                <h2>More about a song...</h2>
+				<div class="txt_field">
+					<input type="text" required>
+					<label>Enter the name of the song you're looking for!</label>
+				</div>
+                <input type="submit" value="Upload">
+            </fieldset>
+        </form>
+
+        <form method="post">
+            <fieldset>
+                <h2>Create a new playlist</h2>
+				<div class="txt_field">
+					<input type="text" required>
+					<label>Choose a name for the playlist!</label>
+				</div>
+                <form method="post">
+                    <fieldset>
+                        <h3>Add a song</h3>
+                        <div class="txt_field">
+                            <input type="text" required>
+                            <label>Choose a song to add!</label>
+                        </div>
+                        <input type="submit" value="+">
+                    </fieldset>
+                </form>
+                <input type="submit" value="Create">
+            </fieldset>
+        </form>
+    </div>
 </body>
 
 </html>
