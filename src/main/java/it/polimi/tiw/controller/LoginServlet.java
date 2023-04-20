@@ -17,14 +17,14 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet("/LoginServlet")
+@WebServlet("/checkLogin")
 public class LoginServlet extends HttpServlet {
    
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		String email = request.getParameter("email");
+		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
 		try {
@@ -35,14 +35,14 @@ public class LoginServlet extends HttpServlet {
 			// database used
 			// user ID
 			// password
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/users?serverTimezone=UTC","root","BluBanan69!");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TIW_Project?serverTimezone=UTC","root","BluBanan69!");
 			
 			java.sql.Statement stm = con.createStatement();
-			String query = "select * from saved_users where email='" + email + "' and password='" + password + "'";
+			String query = "select * from user where username='" + username + "' and password='" + password + "'";
 			ResultSet res = stm.executeQuery(query);
 			
 			if(res.next()) {
-				out.print("<h1>" + email + ", welcome back!");
+				out.print("<h1>" + username + ", welcome back!");
 				response.sendRedirect("homepage.html");	
 			}
 			else {
