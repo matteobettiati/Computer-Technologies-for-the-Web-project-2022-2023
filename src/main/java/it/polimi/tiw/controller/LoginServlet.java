@@ -1,4 +1,4 @@
-package it.polimi.tiw.playlist;
+package it.polimi.tiw.controller;
 
 import java.beans.Statement;
 import java.io.IOException;
