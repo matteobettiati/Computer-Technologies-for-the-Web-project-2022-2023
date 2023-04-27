@@ -1,4 +1,4 @@
-package it.polimi.tiw.controller.beans;
+package it.polimi.tiw.beans;
 
 public class User {
 
