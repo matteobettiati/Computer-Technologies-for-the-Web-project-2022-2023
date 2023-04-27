@@ -15,11 +15,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.Playlist;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.PlaylistDAO;
-
 
 /**
  * Servlet implementation class GoToHomepage
@@ -28,11 +31,17 @@ import it.polimi.tiw.dao.PlaylistDAO;
 public class GoToHomepage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
-
+	private TemplateEngine templateEngine;
 
 	public void init() throws ServletException {
+		ServletContext context = getServletContext();
+		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(context);
+		templateResolver.setTemplateMode(TemplateMode.HTML);
+		this.templateEngine = new TemplateEngine();
+		this.templateEngine.setTemplateResolver(templateResolver);
+		templateResolver.setSuffix(".html");
 		try {
-			ServletContext context = getServletContext();
+			
 			String driver = context.getInitParameter("dbDriver");
 			String url = context.getInitParameter("dbUrl");
 			String user = context.getInitParameter("dbUser");
@@ -41,44 +50,52 @@ public class GoToHomepage extends HttpServlet {
 			connection = DriverManager.getConnection(url, user, password);
 
 		} catch (ClassNotFoundException e) {
-		    e.printStackTrace();			
+			e.printStackTrace();
 			throw new UnavailableException("Can't load database driver");
 		} catch (SQLException e) {
-		    e.printStackTrace();			
+			e.printStackTrace();
 			throw new UnavailableException("Couldn't get db connection");
 		}
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);   					  // 
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		HttpSession session = request.getSession(false); //
 		if (session == null || session.getAttribute("currentUser") == null) { // controls if user is NOT logged in
-			String path = getServletContext().getContextPath();				  //
-			response.sendRedirect(path);									  //
-		}																	  //
+			String path = getServletContext().getContextPath(); //
+			response.sendRedirect(path); //
+		} //
 		else {
 			PlaylistDAO playlistDAO = new PlaylistDAO(connection);
-			List<Playlist> playlists;
+			List<Playlist> playlists = null;
 			int userId = ((User) session.getAttribute("currentUser")).getIdUser();
-			//try {
-				String path = "/WEB-INF/homepage.html";
-				
-				//playlists = playlistDAO.findPlaylistsByIUser(userId);
-				//request.setAttribute("playlists", playlists);
-				RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-				dispatcher.forward(request, response);
-			//} catch (SQLException e) {
-				//response.sendError(500, "Database access failed");
-			//}			
+			try {
+
+				playlists = playlistDAO.getPlaylistsByUser(userId);
+			} catch (SQLException e) {
+				response.sendError(500, "Database access failed");
+			}
+
+			String path = "/WEB-INF/homepage.html";
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("playlists", playlists);
+			ctx.setVariable("currentUser", ((User) session.getAttribute("currentUser")));
+			templateEngine.process(path, ctx, response.getWriter());
+
 		}
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

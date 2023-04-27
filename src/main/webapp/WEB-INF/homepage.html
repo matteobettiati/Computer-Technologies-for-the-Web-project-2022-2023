@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>Home page</title>
     <link rel="stylesheet" href="homepage.css">
 </head>
 
 <body>
     <div class="box">
-        <h1>Welcome back!</h1>
+        <h1>Welcome back <span th:text= "${$currentUser.username}">...</span> !</h1> 
         <div class="logout">
             <a href="login.html">Logout</a>
         </div> 
-        <figure>
-            <figcaption><h2>Your playlist</h2></figcaption>
-            <ul>
-                <li><a href="playlist1.html">Playlist1</a></li>
-            </ul>
-        </figure>
+       
+       
+       
+       
+       
         <form method="post">
             <fieldset>
                 <h2>Add a song to the database</h2>
