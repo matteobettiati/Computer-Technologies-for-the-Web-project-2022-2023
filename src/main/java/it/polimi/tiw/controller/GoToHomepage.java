@@ -41,7 +41,7 @@ public class GoToHomepage extends HttpServlet {
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
 		try {
-			
+
 			String driver = context.getInitParameter("dbDriver");
 			String url = context.getInitParameter("dbUrl");
 			String user = context.getInitParameter("dbUser");
@@ -74,19 +74,19 @@ public class GoToHomepage extends HttpServlet {
 			List<Playlist> playlists = null;
 			int userId = ((User) session.getAttribute("currentUser")).getIdUser();
 			try {
-
+				
 				playlists = playlistDAO.getPlaylistsByUser(userId);
+				
 			} catch (SQLException e) {
 				response.sendError(500, "Database access failed");
 			}
-
+			String username = request.getParameter("username");
 			String path = "/WEB-INF/homepage.html";
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("playlists", playlists);
-			ctx.setVariable("currentUser", ((User) session.getAttribute("currentUser")));
+			ctx.setVariable("username", username);
 			templateEngine.process(path, ctx, response.getWriter());
-
 		}
 	}
 

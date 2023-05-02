@@ -53,10 +53,10 @@ public class CheckLogin extends HttpServlet {
 		try {
 			User user = userDAO.checkUser(username, password);
 			if (user != null) {
-				HttpSession session = request.getSession();
+				HttpSession session = request.getSession(true);
 				session.setAttribute("currentUser", user);
+				session.setAttribute("username", username);
 				String path = getServletContext().getContextPath() + "/GoToHomepage";
-				
 				response.sendRedirect(path);
 			}
 			else {

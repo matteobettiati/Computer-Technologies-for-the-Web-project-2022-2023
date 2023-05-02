@@ -1,57 +1,75 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home page</title>
-    <link rel="stylesheet" href="homepage.css">
-</head>
+	<head>
+		<meta charset="UTF-8">
+		<title> Home </title>
+		<link rel="stylesheet" type="text/css" media="all"
+			href="../CSS/mystyle.css" th:href="@{/CSS/mystyle.css}" />
+	</head>
 
-<body>
-    <div class="box">
-        <h1>Welcome back <span th:text= "${$currentUser.username}">...</span> !</h1> 
-        <div class="logout">
-            <a href="login.html">Logout</a>
-        </div> 
-       
-       
-       
-       
-       
-        <form method="post">
-            <fieldset>
-                <h2>Add a song to the database</h2>
-				<div class="txt_field">
-					<input type="text" required>
-					<label>Enter the name of the song you're looking for!</label>
-				</div>
-                <input type="submit" value="Upload">
-            </fieldset>
-        </form>
-
-        <form method="post">
-            <fieldset>
-                <h2>Create a new playlist</h2>
-				<div class="txt_field">
-					<input type="text" required>
-					<label>Choose a name for the playlist!</label>
-				</div>
-                <form method="post">
-                    <fieldset>
-                        <h3>Add a song</h3>
-                        <div class="txt_field">
-                            <input type="text" required>
-                            <label>Choose a song to add!</label>
-                        </div>
-                        <input type="submit" value="+">
-                    </fieldset>
-                </form>
-                <input type="submit" value="Create">
-            </fieldset>
-        </form>
-    </div>
-</body>
+	<body>
+		<h1>Home page</h1>
+		<h2>Nice to see you again <span th:text="${session.username}">cioa</span></h2>
+		<div class="logout">
+			<a th:href="@{Logout}">Logout</a>
+		</div>
+		<br>
+		
+		<fieldset class="createSongField">
+			<form th:action="@{/CreateSong}" method="POST" enctype="multipart/form-data">
+				Add a new song in your DataBase<br>
+				<p>Title: 					<input type="text" id="title" name="title" required></p>
+				<p>Genre:					<select id="genre" name="genre" required>
+												<option value="Dance"> Dance </option>
+												<option value="Pop">   Pop   </option>
+												<option value="Rap">   Rap   </option>
+												<option value="Rock">  Rock  </option>
+											</select></p>
+				<p>Album title: 			<input type="text" id="albumTitle" name="albumTitle" required></p>
+				<p>Singer: 					<input type="text" id="singer" name="singer" required></p>
+				<p>Album publication year: 	<input type="number" id="date" name="date" required></p>
+				<p>Album image: 			<input type="file" name="albumImg" accept="image/*" required></p>
+				<p>MP3 file: 				<input type="file" name="songFile" accept="audio/*" required></p>
+				<p><input type="submit" value="submit"></p>
+				<p th:class = "error" th:text="${errorMsg1}">
+			</form>
+		</fieldset>
+		<br><br>
+		
+		<div th:class="playlistTable" th:if="${#lists.isEmpty(playlists)}">
+			No playList yet
+		</div>
+		<div th:class="playlistTable" th:if="${not #lists.isEmpty(playlists)}">
+			<table>
+				<thead>
+					<tr>
+						<th>PlayList name</th>
+						<th>Creation date</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="p : ${playlists}">
+						<td><a th:href="@{GoToPlayListPage(playlistId=${p.id} , section=0)}">
+							<span th:text="${p.title}"></span></a>
+						</td>
+						<td><span th:text="${#dates.format(p.creationDate , 'dd.MM.yyyy')}"></span></td>
+					</tr>
+				</tbody>
+			</table>
+			<p th:class = "error" th:text="${errorMsg2}"></p>
+		</div>
+		
+		<br><br>
+		<fieldset th:class="createPlaylistField">
+			<form th:action="@{/CreatePlaylist}" method="POST">
+				Create a new playList<br>
+				<p>Title: <input type="text" id="title" name="title" required></p>
+				<p><input type="submit" value="submit"></p>
+				<p th:class = "error" th:text="${errorMsg}"></p>
+			</form>
+		</fieldset>
+		
+	</body>
 
 </html>
