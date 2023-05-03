@@ -10,29 +10,30 @@
 
 	<body>
 		<h1>Home page</h1>
-		<h2>Nice to see you again <span th:text="${session.username}">cioa</span></h2>
+		<h2>Nice to see you again <span th:text="${session.username}"></span></h2>
 		<div class="logout">
 			<a th:href="@{Logout}">Logout</a>
 		</div>
 		<br>
 		
 		<fieldset class="createSongField">
-			<form th:action="@{/CreateSong}" method="POST" enctype="multipart/form-data">
+			<form th:action="@{/UploadSong}" method="POST" enctype="multipart/form-data">
 				Add a new song in your DataBase<br>
 				<p>Title: 					<input type="text" id="title" name="title" required></p>
 				<p>Genre:					<select id="genre" name="genre" required>
-												<option value="Dance"> Dance </option>
+												<option value="Classic"> Classic </option>
 												<option value="Pop">   Pop   </option>
 												<option value="Rap">   Rap   </option>
 												<option value="Rock">  Rock  </option>
+												<option value="Rock">  Jazz  </option>	
 											</select></p>
 				<p>Album title: 			<input type="text" id="albumTitle" name="albumTitle" required></p>
-				<p>Singer: 					<input type="text" id="singer" name="singer" required></p>
+				<p>Author: 					<input type="text" id="author" name="author" required></p>	
 				<p>Album publication year: 	<input type="number" id="date" name="date" required></p>
 				<p>Album image: 			<input type="file" name="albumImg" accept="image/*" required></p>
 				<p>MP3 file: 				<input type="file" name="songFile" accept="audio/*" required></p>
 				<p><input type="submit" value="submit"></p>
-				<p th:class = "error" th:text="${errorMsg1}">
+				<p th:class="error" th:text="${session.errorMsg1}">
 			</form>
 		</fieldset>
 		<br><br>
@@ -57,7 +58,7 @@
 					</tr>
 				</tbody>
 			</table>
-			<p th:class = "error" th:text="${errorMsg2}"></p>
+			<p th:class = "error" th:text="${session.errorMsg2}"></p>
 		</div>
 		
 		<br><br>

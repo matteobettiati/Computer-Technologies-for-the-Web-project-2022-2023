@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
@@ -24,9 +23,6 @@ import it.polimi.tiw.beans.Playlist;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.PlaylistDAO;
 
-/**
- * Servlet implementation class GoToHomepage
- */
 @WebServlet("/GoToHomepage")
 public class GoToHomepage extends HttpServlet {
 	private static final long serialVersionUID = 1L;

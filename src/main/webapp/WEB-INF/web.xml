@@ -6,7 +6,7 @@
 	
 	<context-param>
 		<param-name>dbUrl</param-name>
-		<param-value>jdbc:mysql://localhost:3306/TIW_project?serverTimezone=UTC</param-value>
+		<param-value>jdbc:mysql://127.0.0.1:3306/song_playlist?serverTimezone=UTC</param-value>
 	</context-param>
 	<context-param>
 		<param-name>dbUser</param-name>
@@ -14,7 +14,7 @@
 	</context-param>
 	<context-param>
 		<param-name>dbPassword</param-name>
-		<param-value>BluBanan69!</param-value>
+		<param-value>Nave1143Nostalgico!</param-value>
 	</context-param>
 	<context-param>
 		<param-name>dbDriver</param-name>
