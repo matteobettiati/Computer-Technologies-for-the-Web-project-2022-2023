@@ -60,6 +60,7 @@ public class GoToHomepage extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String error1 = "";
 		HttpSession session = request.getSession(false); //
 		if (session == null || session.getAttribute("currentUser") == null) { // controls if user is NOT logged in
 			String path = getServletContext().getContextPath(); //
@@ -76,10 +77,18 @@ public class GoToHomepage extends HttpServlet {
 			} catch (SQLException e) {
 				response.sendError(500, "Database access failed");
 			}
+					
+			
 			String username = request.getParameter("username");
 			String path = "/WEB-INF/homepage.html";
+			
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			
+			if(((String) request.getAttribute("error1")) != null) 
+				error1 = (String) request.getAttribute("error1");
+			ctx.setVariable("errorMsg1", error1);
+			
 			ctx.setVariable("playlists", playlists);
 			ctx.setVariable("username", username);
 			templateEngine.process(path, ctx, response.getWriter());

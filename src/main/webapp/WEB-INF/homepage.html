@@ -25,7 +25,7 @@
 												<option value="Pop">   Pop   </option>
 												<option value="Rap">   Rap   </option>
 												<option value="Rock">  Rock  </option>
-												<option value="Rock">  Jazz  </option>	
+												<option value="Jazz">  Jazz  </option>	
 											</select></p>
 				<p>Album title: 			<input type="text" id="albumTitle" name="albumTitle" required></p>
 				<p>Author: 					<input type="text" id="author" name="author" required></p>	
@@ -33,7 +33,7 @@
 				<p>Album image: 			<input type="file" name="albumImg" accept="image/*" required></p>
 				<p>MP3 file: 				<input type="file" name="songFile" accept="audio/*" required></p>
 				<p><input type="submit" value="submit"></p>
-				<p th:class="error" th:text="${session.errorMsg1}">
+				<p th:class="error" th:text="${errorMsg1}">
 			</form>
 		</fieldset>
 		<br><br>
