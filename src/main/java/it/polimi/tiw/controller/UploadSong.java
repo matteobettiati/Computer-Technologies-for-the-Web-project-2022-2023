@@ -100,7 +100,7 @@ public class UploadSong extends HttpServlet {
 		}
 		
 		//Check if the genre is valid
-		if(!(genre.equals("Classic") || genre.equals("Pop") || genre.equals("Rock") || genre.equals("Rap"))) {
+		if(!(genre.equals("Classic") || genre.equals("Pop") || genre.equals("Rock") || genre.equals("Rap") || genre.equals("Jazz"))) {
 			error += "Invalid genre;";
 		}
 		
