@@ -1,6 +1,7 @@
 package it.polimi.tiw.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,21 +11,21 @@ import java.util.List;
 import it.polimi.tiw.beans.*;
 
 public class PlaylistDAO {
-	
-	private Connection con;
-	
+
+	private Connection connection;
+
 	public PlaylistDAO(Connection connection) {
-		this.con = connection;
+		this.connection = connection;
 	}
-	
-	public List<Playlist> getPlaylistsByUser (int userID) throws SQLException {
+
+	public List<Playlist> getPlaylistsByUser(int userID) throws SQLException {
 		List<Playlist> playlists = new ArrayList<>();
 		String query = "SELECT * FROM playlist WHERE userID = ?";
 		ResultSet result = null;
 		PreparedStatement pstatement = null;
-		
+
 		try {
-			pstatement = con.prepareStatement(query);
+			pstatement = connection.prepareStatement(query);
 			pstatement.setInt(1, userID);
 			result = pstatement.executeQuery();
 			while (result.next()) {
@@ -35,10 +36,9 @@ public class PlaylistDAO {
 				playlist.setIdUser(result.getInt("userID"));
 				playlists.add(playlist);
 			}
-			
-			
+
 		} catch (SQLException e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 			throw new SQLException(e);
 
 		} finally {
@@ -52,10 +52,180 @@ public class PlaylistDAO {
 			} catch (Exception e2) {
 				throw new SQLException(e2);
 			}
-			
+
 		}
 		return playlists;
-		
+
+	}
+
+	public boolean createPlaylist(String title, Date creationDate, int userId) throws SQLException {
+		String query = "INSERT INTO playlist (title , creationDate , userID) VALUES (? , ? , ?)";
+		int code = 0;
+		PreparedStatement pStatement = null;
+
+		if (findPlaylistByTitle(title, userId) == true)
+			return false;
+
+		try {
+			pStatement = connection.prepareStatement(query);
+			pStatement.setString(1, title);
+			pStatement.setDate(2, creationDate);
+			pStatement.setInt(3, userId);
+			code = pStatement.executeUpdate();
+		} catch (SQLException e) {
+			throw new SQLException();
+		} finally {
+			try {
+				if (pStatement != null) {
+					pStatement.close();
+				}
+			} catch (Exception e1) {
+				throw new SQLException(e1);
+			}
+		}
+		return (code > 0);
+	}
+
+	public boolean findPlaylistByTitle(String title, int userId) throws SQLException {
+
+		String query = "SELECT * FROM playlist WHERE title = ? AND userID = ?";
+		boolean result = false;
+		ResultSet resultSet = null;
+		PreparedStatement pStatement = null;
+
+		try {
+			pStatement = connection.prepareStatement(query);
+			pStatement.setString(1, title);
+			pStatement.setInt(2, userId);
+			resultSet = pStatement.executeQuery();
+
+			if (resultSet.next())
+				result = true;
+
+		} catch (SQLException e) {
+			throw new SQLException();
+		} finally {
+			try {
+				if (resultSet != null) {
+					resultSet.close();
+				}
+			} catch (Exception e1) {
+				throw new SQLException(e1);
+			}
+			try {
+				if (pStatement != null) {
+					pStatement.close();
+				}
+			} catch (Exception e2) {
+				throw new SQLException(e2);
+			}
+		}
+		return result;
+	}
+
+	public List<Playlist> findPlaylist(int userId) throws SQLException {
+		String query = "SELECT * FROM playlist WHERE userID = ? ORDER BY creationDate DESC";
+		ResultSet resultSet = null;
+		PreparedStatement pStatement = null;
+		List<Playlist> playlists = new ArrayList<Playlist>();
+
+		try {
+			pStatement = connection.prepareStatement(query);
+			pStatement.setInt(1, userId);
+
+			resultSet = pStatement.executeQuery();
+
+			while (resultSet.next()) {
+				Playlist playlist = new Playlist();
+				playlist.setTitle(resultSet.getString("title"));
+				playlist.setIdUser(resultSet.getInt("userID"));
+				playlist.setCreationDate(resultSet.getDate("creationDate"));
+				playlists.add(playlist);
+			}
+		} catch (SQLException e) {
+			throw new SQLException();
+		} finally {
+			try {
+				if (resultSet != null) {
+					resultSet.close();
+				}
+			} catch (Exception e1) {
+				throw new SQLException(e1);
+			}
+			try {
+				if (pStatement != null) {
+					pStatement.close();
+				}
+			} catch (Exception e2) {
+				throw new SQLException(e2);
+			}
+		}
+		return playlists;
+
+	}
+
+	public int getLastID() throws SQLException {
+		String query = "SELECT MAX(ID) as playlistID FROM playlist";
+		PreparedStatement pStatement = null;
+		ResultSet resultSet = null;
+		int lastID = 0;
+
+		try {
+			pStatement = connection.prepareStatement(query);
+			resultSet = pStatement.executeQuery();
+			if (resultSet.next()) {
+				lastID = resultSet.getInt("playlistID");
+			}
+		} catch (SQLException e) {
+			throw new SQLException();
+		} finally {
+			try {
+				if (pStatement != null) {
+					pStatement.close();
+				}
+			} catch (Exception e1) {
+				throw new SQLException(e1);
+			}
+		}
+		return lastID;
+	}
+
+	public boolean relateSong(int songID, int playlistID) throws SQLException {
+		String checkquery = "SELECT * FROM contains where playlistID = ? AND songID = ?";
+		String query = "INSERT INTO contains (playlistID,songID) values (?,?)";
+		PreparedStatement pStatement = null;
+		ResultSet resultSet = null;
+		int code = 0;
+
+		try {
+
+			pStatement = connection.prepareStatement(checkquery);
+			pStatement.setInt(1, playlistID);
+			pStatement.setInt(2, songID);
+			resultSet = pStatement.executeQuery();
+			if (resultSet.next()) {
+			    return false;
+			}
+			pStatement.close();
+			
+			pStatement = connection.prepareStatement(query);
+			pStatement.setInt(1, playlistID);
+			pStatement.setInt(2, songID);
+			code = pStatement.executeUpdate();
+
+
+		} catch (SQLException e) {
+			throw new SQLException();
+		} finally {
+			try {
+				if (pStatement != null) {
+					pStatement.close();
+				}
+			} catch (Exception e1) {
+				throw new SQLException(e1);
+			}
+		}
+		return code > 0;
 	}
 
 }
