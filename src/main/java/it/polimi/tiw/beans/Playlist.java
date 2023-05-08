@@ -3,7 +3,7 @@ package it.polimi.tiw.beans;
 import java.sql.Date;
 
 public class Playlist {
-	private int IdPlaylist;
+	private int idPlaylist;
 	private String title;
 	private Date creationDate;
 	private int IdUser;
@@ -27,9 +27,9 @@ public class Playlist {
 		IdUser = idUser;
 	}
 	public int getIdPlaylist() {
-		return IdPlaylist;
+		return this.idPlaylist;
 	}
 	public void setIdPlaylist(int idPlaylist) {
-		IdPlaylist = idPlaylist;
+		this.idPlaylist = idPlaylist;
 	}
 }

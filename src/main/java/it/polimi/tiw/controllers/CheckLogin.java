@@ -1,4 +1,4 @@
-package it.polimi.tiw.controller;
+package it.polimi.tiw.controllers;
 
 
 import java.io.IOException;
