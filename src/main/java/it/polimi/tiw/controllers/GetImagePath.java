@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.SongDAO;
 
-@WebServlet("/GetImage/*")
+@WebServlet("/GetImagePath/*")
 public class GetImagePath extends HttpServlet{
 	
 	private static final long serialVersionUID = 1L;
@@ -53,7 +53,7 @@ public class GetImagePath extends HttpServlet{
 		
 		HttpSession s = request.getSession();
 		
-		User user = (User) s.getAttribute("user");
+		User user = (User) s.getAttribute("currentUser");
 		
 		if (s.isNew() || user == null) {
 			//Redirect to the login page

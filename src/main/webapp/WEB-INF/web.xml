@@ -2,8 +2,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
 	version="4.0">
-	
-	
+
+
 	<context-param>
 		<param-name>dbUrl</param-name>
 		<param-value>jdbc:mysql://127.0.0.1:3306/TIW_project?serverTimezone=UTC</param-value>
@@ -20,12 +20,22 @@
 		<param-name>dbDriver</param-name>
 		<param-value>com.mysql.cj.jdbc.Driver</param-value>
 	</context-param>
-	
-	
+
+
+	<!-- Paths of albumsImages and audioFile -->
+	<context-param>
+		<param-name>albumImgPath</param-name>
+		<param-value>/Users/macbookpro/Desktop/album images/</param-value>
+	</context-param>
+	<context-param>
+		<param-name>songFilePath</param-name>
+		<param-value>/Users/macbookpro/Desktop/file audio/</param-value>
+	</context-param>
+
 	<welcome-file-list>
 		<welcome-file>login.html</welcome-file>
 	</welcome-file-list>
-	
+
 </web-app>
 
 

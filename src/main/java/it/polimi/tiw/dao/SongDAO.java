@@ -34,7 +34,7 @@ public class SongDAO {
 			pStatement.setString(7, genre);
 			pStatement.setString(8, fileAudioPath);
 
-			
+
 			
 			code = pStatement.executeUpdate();
 		}catch(SQLException e) {
@@ -200,7 +200,7 @@ public class SongDAO {
 	}
 	
 	public boolean findSongByUserId(String audioPath , int userId) throws SQLException{
-		String query = "SELECT * FROM song WHERE fileAudioPath = ? AND IdUser = ?";
+		String query = "SELECT * FROM song WHERE albumImagePath = ? AND userID = ?";
 		boolean result = false;
 		PreparedStatement pStatement = null;
 		ResultSet resultSet = null;
