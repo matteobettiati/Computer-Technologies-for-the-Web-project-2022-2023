@@ -67,9 +67,9 @@ public class GoToHomepage extends HttpServlet {
 		String message = "";
 		HttpSession session = request.getSession(false); //
 		if (session == null || session.getAttribute("currentUser") == null) { // controls if user is NOT logged in
-			String path = getServletContext().getContextPath(); //
-			response.sendRedirect(path); //
-		} //
+			String path = getServletContext().getContextPath(); 
+			response.sendRedirect(path); 
+		} 
 		else {
 			PlaylistDAO playlistDAO = new PlaylistDAO(connection);
 			SongDAO songDAO = new SongDAO(connection);
