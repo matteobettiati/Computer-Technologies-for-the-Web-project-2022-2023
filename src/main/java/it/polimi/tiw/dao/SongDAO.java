@@ -17,6 +17,47 @@ public class SongDAO {
 		this.connection = connection;
 	}
 	
+	public Song getSongInfo(int songId) throws SQLException{
+		String query = "SELECT * FROM song WHERE ID = ?";
+		ResultSet resultSet = null;
+		PreparedStatement pStatement = null;
+		Song song = new Song();
+		
+		try {
+			pStatement = connection.prepareStatement(query);
+			pStatement.setInt(1, songId);
+			
+			resultSet = pStatement.executeQuery();
+			
+			if(resultSet.next()) {
+				song.setTitle(resultSet.getString("title"));
+				song.setAlbumTitle(resultSet.getString("albumTitle"));
+				song.setAuthor(resultSet.getString("author"));
+				song.setGenre(resultSet.getString("genre"));
+				song.setYear(resultSet.getInt("publicationYear"));
+				song.setFileAudio(resultSet.getString("fileAudioPath"));
+				song.setImage("albumImagePath");
+			}
+		}catch(SQLException e) {
+			throw new SQLException();
+		}finally {
+			try {
+				if(resultSet != null) {
+					resultSet.close();
+				}
+			}catch(Exception e1) {
+				throw new SQLException(e1);
+			}
+			try {
+				if(pStatement != null) {
+					pStatement.close();
+				}
+			}catch(Exception e2) {
+				throw new SQLException(e2);
+			}
+		}
+		return song;
+	}
 	
 	public boolean upLoadSong(String title, String albumImagePath, String albumTitle, String author, int userID, int publicationYear, String genre, String fileAudioPath) throws SQLException {
 		String query = "INSERT INTO song (title,albumImagePath,albumTitle,author,userID,publicationYear,genre,fileAudioPath) values (?,?,?,?,?,?,?,?)";
@@ -199,8 +240,45 @@ public class SongDAO {
 		return songs;
 	}
 	
-	public boolean findSongByUserId(String audioPath , int userId) throws SQLException{
+	public boolean findSongByImageAndUserId(String imagePath , int userId) throws SQLException{
 		String query = "SELECT * FROM song WHERE albumImagePath = ? AND userID = ?";
+		boolean result = false;
+		PreparedStatement pStatement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			pStatement = connection.prepareStatement(query);
+			pStatement.setString(1, imagePath);
+			pStatement.setInt(2, userId);
+			
+			resultSet = pStatement.executeQuery();
+			
+			if(resultSet.next())
+				result = true;
+			
+		}catch(SQLException e) {
+			throw new SQLException();
+		}finally {
+			try {
+				if(resultSet != null) {
+					resultSet.close();
+				}
+			}catch(Exception e1) {
+				throw new SQLException(e1);
+			}
+			try {
+				if(pStatement != null) {
+					pStatement.close();
+				}
+			}catch(Exception e2) {
+				throw new SQLException(e2);
+			}
+		}	
+		return result;
+	}
+
+	public boolean findSongByAudioAndUserId(String audioPath , int userId) throws SQLException{
+		String query = "SELECT * FROM song WHERE fileAudioPath = ? AND userID = ?";
 		boolean result = false;
 		PreparedStatement pStatement = null;
 		ResultSet resultSet = null;
@@ -235,4 +313,42 @@ public class SongDAO {
 		}	
 		return result;
 	}
+	
+	public boolean findSongByUserId(int songId, int userId) throws SQLException {
+		String query = "SELECT * FROM song WHERE ID = ? AND userID = ?";
+		boolean result = false;
+		PreparedStatement pStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			pStatement = connection.prepareStatement(query);
+			pStatement.setInt(1, songId);
+			pStatement.setInt(2, userId);
+
+			resultSet = pStatement.executeQuery();
+
+			if (resultSet.next())
+				result = true;
+
+		} catch (SQLException e) {
+			throw new SQLException();
+		} finally {
+			try {
+				if (resultSet != null) {
+					resultSet.close();
+				}
+			} catch (Exception e1) {
+				throw new SQLException(e1);
+			}
+			try {
+				if (pStatement != null) {
+					pStatement.close();
+				}
+			} catch (Exception e2) {
+				throw new SQLException(e2);
+			}
+		}
+		return result;
+	}
 }
+

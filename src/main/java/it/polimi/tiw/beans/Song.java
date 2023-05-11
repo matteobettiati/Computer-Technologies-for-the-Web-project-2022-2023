@@ -2,10 +2,12 @@ package it.polimi.tiw.beans;
 
 public class Song {
 	
+	private int idSong;
 	private String title;
 	private String imagePath;
+	private String albumTitle;
 	private String author;
-	private int idSong;
+	private int userId;
 	private int year;
 	private String genre;
 	private String fileAudioPath;
@@ -52,6 +54,18 @@ public class Song {
 	}
 	public void setFileAudio(String fileAudio) {
 		this.fileAudioPath = fileAudio;
+	}
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	public String getAlbumTitle() {
+		return albumTitle;
+	}
+	public void setAlbumTitle(String albumTitle) {
+		this.albumTitle = albumTitle;
 	}
 
 

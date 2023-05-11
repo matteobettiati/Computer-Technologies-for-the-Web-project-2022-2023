@@ -35,7 +35,7 @@
 								
 								<tr>
 									<td><a
-										th:href="@{GoToSongPage(songId=${s.getIDSong()} , playlistId=${playlist.getIdPlaylist()} , section=${block})}">
+										th:href="@{GoToPlayerPage(songId=${s.getIDSong()} , playlistId=${playlist.getIdPlaylist()} , block=${block})}">
 											<span th:text="${s.getTitle()}">fileAudio</span>
 									</a></td>
 								</tr>
