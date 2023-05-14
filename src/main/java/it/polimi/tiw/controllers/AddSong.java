@@ -49,7 +49,7 @@ public class AddSong extends HttpServlet{
 		int sId = -1;
 		
 		HttpSession s = request.getSession();
-		//Take the user
+		
 	    User user = (User) s.getAttribute("currentUser");
 		
 		if (s.isNew() || user == null) {
@@ -57,7 +57,7 @@ public class AddSong extends HttpServlet{
 			return;
 		}
 		
-	    //Check id the parameters are present
+	    
 		if(playlistId == null || playlistId.isEmpty() || songId == null || songId.isEmpty()) {
 			error += "Missing parameter;";
 		}
@@ -75,9 +75,9 @@ public class AddSong extends HttpServlet{
 			}
 		}
 		
-		//if an error occurred
+		// case of error
 		if(!error.equals("")) {
-			request.setAttribute("error", error);
+			s.setAttribute("errorFromAddSong", error);
 			String path = getServletContext().getContextPath() + "/GoToPlaylistPage?playlistId=" + playlistId + "&section=0";
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
@@ -98,7 +98,7 @@ public class AddSong extends HttpServlet{
 			}
 			else {
 				error += "An arror occurred with the db, retry later;";
-				request.setAttribute("error", error);
+				s.setAttribute("errorFromAddSong", error);
 				//Forward to GoToPlaylistPage
 				String path = getServletContext().getContextPath() + "/GoToPlaylistPage?playlistId=" + playlistId + "&section=0";
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);

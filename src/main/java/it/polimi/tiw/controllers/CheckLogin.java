@@ -12,6 +12,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.UserDAO;
 
@@ -19,11 +25,17 @@ import it.polimi.tiw.dao.UserDAO;
 public class CheckLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
+	private TemplateEngine templateEngine;
 
 	public void init() throws ServletException {
-		
+		ServletContext context = getServletContext();
+		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(context);
+		templateResolver.setTemplateMode(TemplateMode.HTML);
+		this.templateEngine = new TemplateEngine();
+		this.templateEngine.setTemplateResolver(templateResolver);
+		templateResolver.setSuffix(".html");
+
 		try {
-			ServletContext context = getServletContext();
 			String driver = context.getInitParameter("dbDriver");
 			String url = context.getInitParameter("dbUrl");
 			String user = context.getInitParameter("dbUser");
@@ -44,12 +56,17 @@ public class CheckLogin extends HttpServlet {
 			throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		String error = "";
+
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
 		if (username == null || password == null) {
 			
-			request.setAttribute("errorMessage", "Invalid username or password");
-			response.sendRedirect(request.getContextPath() + "/login.html?error=true");
-		
+			error = "Invalid username or password";
+			ctx.setVariable("error", error);
+			templateEngine.process("/login.html", ctx, response.getWriter());
+
 		} else {
 
 			UserDAO userDAO = new UserDAO(connection);
@@ -62,15 +79,18 @@ public class CheckLogin extends HttpServlet {
 					String path = getServletContext().getContextPath() + "/GoToHomepage";
 					response.sendRedirect(path);
 				} else {
-					
-					request.setAttribute("errorMessage", "Invalid username or password");
-					response.sendRedirect(request.getContextPath() + "/login.html?error=true");
+					error = "Invalid username or password";
+					String path = "login.html";
+					ctx.setVariable("error", error);
+					templateEngine.process(path, ctx, response.getWriter());
+					return;
 				}
 			} catch (SQLException e) {
 				response.sendError(500, "Database access failed");
 			}
 		}
 	}
+	
 
 	public void destroy() {
 		try {

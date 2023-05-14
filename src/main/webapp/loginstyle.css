@@ -1,3 +1,7 @@
+.error{
+	color: red;
+}
+
 body {
 	margin: 0;
 	padding: 0;
@@ -47,6 +51,9 @@ form .txt_field{
 	font-size: 16px;
 	pointer-events: none;
 	transition: .5s;	
+}
+.error{
+	color: red;
 }
 .txt_field span::before{
 	content: '';

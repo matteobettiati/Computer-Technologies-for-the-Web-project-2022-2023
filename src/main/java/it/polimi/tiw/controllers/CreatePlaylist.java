@@ -6,7 +6,6 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -56,7 +55,7 @@ public class CreatePlaylist extends HttpServlet {
 		}
 	}
 
-	public void doPost(HttpServletRequest request , HttpServletResponse response)throws ServletException,IOException{
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String title = request.getParameter("title");
 		String[] songs = request.getParameterValues("songs");
 		Date creationDate = new Date(System.currentTimeMillis());
@@ -69,58 +68,62 @@ public class CreatePlaylist extends HttpServlet {
 			response.sendRedirect("/SongsPlaylist/login.html");
 			return;
 		}
-		
-		if(title == null || title.isEmpty())
-			error += "Title is empty";
-		else if(title.length() > 45)
-			error += "Title is too long";
-		if(!error.equals("")){
-			request.getSession().setAttribute("error", error);
-			String path = getServletContext().getContextPath() + "/GoToHomepage";
-			
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
-			dispatcher.forward(request,response);
-		}
-		
-		PlaylistDAO playlistDAO = new PlaylistDAO(connection);
-		SongDAO songDAO = new SongDAO(connection);
-		
-		try {
-			// create the playlist
-			boolean result = playlistDAO.createPlaylist(title, creationDate , user.getIdUser());
-			
-			if(result == true) {
-				int playlistID = playlistDAO.getLastID();
-				//  add song and check if they are already present
-				for(String song : songs) {
-					int songID = songDAO.getSongID(song);
-					// insert into contains db
-					relate = playlistDAO.relateSong(songID, playlistID);
-					if (relate == false) {
-						error = "Song " + song + "already in the  playlist " + title;
-						
-						request.getSession().setAttribute("error", error);
-						String path = getServletContext().getContextPath() + "/GoToHomepage";
-						
-						RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
-						dispatcher.forward(request,response);
-					}
-				}
-				
-				String path = getServletContext().getContextPath() + "/GoToHomepage";
-				response.sendRedirect(path);
-			}
-			else {
-				error += "Title " + title + " is already used";
-				request.setAttribute("error", error);
-				String path = "/GoToHomepage";
 
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
-				dispatcher.forward(request,response);
+		if (title == null || title.isEmpty())
+			error += "Title is empty";
+		else if (title.length() > 45)
+			error += "Title is too long";
+		else if (songs == null || songs.length == 0)
+			error += "Cannot create an empty playlist";
+
+		if (!error.equals("")) {
+			s.setAttribute("errorFromCreatePlaylist", error);
+			String path ="/GoToHomepage";
+
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
+			dispatcher.forward(request, response);
+			
+		} else {
+
+			PlaylistDAO playlistDAO = new PlaylistDAO(connection);
+			SongDAO songDAO = new SongDAO(connection);
+
+			try {
+				// create the playlist
+				boolean result = playlistDAO.createPlaylist(title, creationDate, user.getIdUser());
+
+				if (result == true) {
+					int playlistID = playlistDAO.getLastID();
+					// add song and check if they are already present
+					for (String song : songs) {
+						int songID = songDAO.getSongID(song);
+						// insert into contains db
+						relate = playlistDAO.relateSong(songID, playlistID);
+						if (relate == false) {
+							error = "Song " + song + "already in the  playlist " + title;
+
+							s.setAttribute("errorFromCreatePlaylist", error);
+							String path = getServletContext().getContextPath() + "/GoToHomepage";
+
+							RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
+							dispatcher.forward(request, response);
+						}
+					}
+
+					String path = getServletContext().getContextPath() + "/GoToHomepage";
+					response.sendRedirect(path);
+				} else {
+					error += "Title " + title + " is already used";
+					s.setAttribute("errorFromCreatePlaylist", error);
+					String path = "/GoToHomepage";
+
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
+					dispatcher.forward(request, response);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Issue with the database");
 			}
-		}catch(SQLException e) {
-			e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Issue with DB!!!!!");
 		}
 	}
 

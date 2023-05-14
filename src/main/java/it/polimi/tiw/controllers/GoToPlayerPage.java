@@ -119,7 +119,7 @@ public class GoToPlayerPage extends HttpServlet{
 		
 		//if an error occurred
 		if(!error.equals("")){
-			request.setAttribute("error2", error);
+			s.setAttribute("errorFromGoToPlayer", error);
 			String path = "/GoToPlaylistPage";
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
@@ -130,7 +130,7 @@ public class GoToPlayerPage extends HttpServlet{
 		//User can be here 
 		
 		//To take song and playList details 
-		SongDAO sDao = new SongDAO(connection);//I can use the same sDao used before
+		SongDAO sDao = new SongDAO(connection); 
 		PlaylistDAO pDao = new PlaylistDAO(connection);
 		
 		try {

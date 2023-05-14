@@ -21,7 +21,7 @@
 	<fieldset class="createSongField">
 		<form th:action="@{/UploadSong}" method="POST"
 			enctype="multipart/form-data">
-			Add a new song in your DataBase<br>
+			Add a new song in your Database<br>
 			<p>
 				Title: <input type="text" id="title" name="title" required>
 			</p>
@@ -35,8 +35,8 @@
 				</select>
 			</p>
 			<p>
-				Album title: <input type="text" id="albumTitle" name="albumTitle"
-					required>
+				Album title: <input type="text" id="albumTitle" name="albumTitle">   <!-- TODO put required -->
+					
 			</p>
 			<p>
 				Author: <input type="text" id="author" name="author" required>
@@ -56,7 +56,7 @@
 			<p>
 				<input type="submit" value="submit">
 			</p>
-			<p th:class="error" th:text="${errorMsg1}">
+			<p th:class="error" th:text="${errorUploadingSong}">
 		</form>
 	</fieldset>
 	<br>
@@ -81,7 +81,7 @@
 					</tr>
 				</tbody>
 			</table>
-			<p th:class = "error" th:text="${session.errorMsg2}"></p>
+			<p th:class = "error" th:text="${errorFromGoToPlaylist}"></p>
 		</div>
 
 	<br>
@@ -103,8 +103,7 @@
 				<p>
 					<input type="submit" value="save" name="save">
 				</p>
-				<p th:class="error" th:text="${errorMsg}"></p>
-				<p th:class="error" th:text="${message}"></p>
+				<p th:class="error" th:text="${errorFromCreatePlaylist}"></p>
 			</fieldset>
 		</form>
 	</fieldset>

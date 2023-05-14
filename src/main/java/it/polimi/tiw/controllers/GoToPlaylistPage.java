@@ -63,18 +63,7 @@ public class GoToPlaylistPage extends HttpServlet {
 		}
 	}
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public GoToPlaylistPage() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -105,13 +94,15 @@ public class GoToPlaylistPage extends HttpServlet {
 			PlaylistDAO playlistDAO = new PlaylistDAO(connection);
 			
 			try {
+				
 				//Check if the playlistId is a number
 				playlistIdParsed = Integer.parseInt(playlistId);
+				
 				//Check if section is a number
 				blockParsed = Integer.parseInt(block);
-				//Check if the user can access at this playList --> Check if the playList exists
 				
-				if(!playlistDAO.getPlaylistByID(playlistIdParsed))
+				//Check if the playList exists
+				if(!playlistDAO.findPlaylistById(playlistIdParsed, user.getIdUser()))
 					error += "PlayList doesn't exist";
 				
 				if(blockParsed < 0)
@@ -123,9 +114,9 @@ public class GoToPlaylistPage extends HttpServlet {
 			}
 		}
 		
-		//The user created this playList
+		// playlist not found
 		if(!error.equals("")){
-			request.setAttribute("error2", error);
+			request.getSession().setAttribute("errorFromGoToPlaylist", error);
 			String path = "/GoToHomepage";
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
@@ -133,17 +124,16 @@ public class GoToPlaylistPage extends HttpServlet {
 			return;
 		}
 		
-		//Take the error in case of forward from AddSong
-		if(request.getAttribute("error") != null) {
-			error += (String) request.getAttribute("error");
+		
+		if(s.getAttribute("errorFromAddSong") != null) {
+			error += (String) s.getAttribute("errorFromAddSong");
 		}
-		//Take the error in case of forward from GoToSongPage
-		else if(request.getAttribute("error2") != null) {
-			error1 += (String) request.getAttribute("error2");
+		//Take the error in case of forward from GoToPlayerPage
+		else if(s.getAttribute("errorFromGoToPlayer") != null) {
+			error1 += (String) s.getAttribute("errorFromGoToPlayer");
 		}
 		
-		
-		//to take songs in and not in the specified playList
+	
 		SongDAO songDao = new SongDAO(connection);
 				
 		//To take the title of the playList
@@ -199,10 +189,11 @@ public class GoToPlaylistPage extends HttpServlet {
 			ctx.setVariable("next", next);
 			ctx.setVariable("previous", previous);
 			
-			ctx.setVariable("errorMsg", error);
-			ctx.setVariable("errorMsg1", error1);
-			
+			ctx.setVariable("errorFromAddSong", error);
+			ctx.setVariable("errorFromGoToPlayer", error1);
 			templateEngine.process(path , ctx , response.getWriter());
+			s.removeAttribute("errorFromAddSong");
+			s.removeAttribute("errorFromGoToPlayer");
 		
 
 		}catch(SQLException e) {
