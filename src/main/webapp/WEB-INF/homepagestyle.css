@@ -1,18 +1,11 @@
-h1 {
-  font-family: Geneva, Verdana, sans-serif;
+fieldset {
+  background-color: #E8DCCA;
   position: fixed;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 body {
   text-align: center;
   background-color: #F1E9D9;
-}
-
-form {
-  background-color: #E8DCCA;
-  position: fixed;
 }
 
 .createSongField {

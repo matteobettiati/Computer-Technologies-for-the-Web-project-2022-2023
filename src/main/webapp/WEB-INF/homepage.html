@@ -4,7 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Home</title>
-<link rel="stylesheet" href="homepagestyle.css"></head>
+<link rel="stylesheet" href="homepagestyle.css">
+</head>
 
 <body>
 	<h1>Home page</h1>
@@ -33,8 +34,8 @@
 				</select>
 			</p>
 			<p>
-				Album title: <input type="text" id="albumTitle" name="albumTitle">   <!-- TODO put required -->
-					
+				Album title: <input type="text" id="albumTitle" name="albumTitle">
+
 			</p>
 			<p>
 				Author: <input type="text" id="author" name="author" required>
@@ -62,25 +63,27 @@
 
 	<div th:class="playlistTable" th:if="${#lists.isEmpty(playlists)}">
 		No playList yet</div>
-		<div th:class="playlistTable" th:if="${not #lists.isEmpty(playlists)}">
-			<table>
-				<thead>
-					<tr>
-						<th>PlayList name</th>
-						<th>Creation date</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="p : ${playlists}">
-						<td><a th:href="@{GoToPlaylistPage(playlistId = ${p.idPlaylist} , block=0)}">
-							<span th:text="${p.title}"></span></a>
-						</td>
-						<td><span th:text="${#dates.format(p.creationDate , 'dd.MM.yyyy')}"></span></td>
-					</tr>
-				</tbody>
-			</table>
-			<p th:class = "error" th:text="${errorFromGoToPlaylist}"></p>
-		</div>
+	<div th:class="playlistTable" th:if="${not #lists.isEmpty(playlists)}">
+		<table>
+			<thead>
+				<tr>
+					<th>PlayList name</th>
+					<th>Creation date</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="p : ${playlists}">
+					<td><a
+						th:href="@{GoToPlaylistPage(playlistId = ${p.idPlaylist} , block=0)}">
+							<span th:text="${p.title}"></span>
+					</a></td>
+					<td><span
+						th:text="${#dates.format(p.creationDate , 'dd.MM.yyyy')}"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		<p th:class="error" th:text="${errorFromGoToPlaylist}"></p>
+	</div>
 
 	<br>
 	<br>
