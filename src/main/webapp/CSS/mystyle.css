@@ -42,19 +42,22 @@ body {
 }
 
 .playlistTable {
-	position: relative;
-	margin: 0% 50% 0% 20% ;
+  margin: 0 auto;
 }
 
-.createPlaylistField {
-	position: relative;
-	margin: 0% 45% 0% 26% ;
+.createPlaylistField,
+.createSongField {
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
 }
 
 .createSongField {
-	position: fixed;
-	margin: 0% -50% 0% 50% ;
+  position: static;
+  margin-left: 20px;
 }
+
 
 .logout {
 	/*

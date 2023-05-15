@@ -193,7 +193,43 @@ public class PlaylistDAO {
 		return result;
 	}
 
+	public boolean findPlaylistById(int playlistId, int userId) throws SQLException {
 
+		String query = "SELECT * FROM playlist WHERE ID = ? AND userID = ?";
+		boolean result = false;
+		ResultSet resultSet = null;
+		PreparedStatement pStatement = null;
+
+		try {
+			pStatement = connection.prepareStatement(query);
+			pStatement.setInt(1, playlistId);
+			pStatement.setInt(2, userId);
+			resultSet = pStatement.executeQuery();
+
+			if (resultSet.next())
+				result = true;
+
+		} catch (SQLException e) {
+			throw new SQLException();
+		} finally {
+			try {
+				if (resultSet != null) {
+					resultSet.close();
+				}
+			} catch (Exception e1) {
+				throw new SQLException(e1);
+			}
+			try {
+				if (pStatement != null) {
+					pStatement.close();
+				}
+			} catch (Exception e2) {
+				throw new SQLException(e2);
+			}
+		}
+		return result;
+	}
+	
 	public int getLastID() throws SQLException {
 		String query = "SELECT MAX(ID) as playlistID FROM playlist";
 		PreparedStatement pStatement = null;

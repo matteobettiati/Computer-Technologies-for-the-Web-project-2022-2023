@@ -62,55 +62,60 @@ public class GoToHomepage extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String error = "";
-		String error1 = "";
+		String errorFromCreatePlaylist = "";
+		String errorUploadingSong = "";
+		String errorFromGoToPlaylist= "";
 		String message = "";
-		HttpSession session = request.getSession(false); //
-		if (session == null || session.getAttribute("currentUser") == null) { // controls if user is NOT logged in
-			String path = getServletContext().getContextPath(); 
-			response.sendRedirect(path); 
-		} 
-		else {
+		
+		HttpSession s = request.getSession(false); //
+		if (s == null || s.getAttribute("currentUser") == null) { // controls if user is NOT logged in
+			String path = getServletContext().getContextPath();
+			response.sendRedirect(path);
+		} else {
 			PlaylistDAO playlistDAO = new PlaylistDAO(connection);
 			SongDAO songDAO = new SongDAO(connection);
 			List<Playlist> playlists = null;
 			List<Song> songs = null;
-			int userId = ((User) session.getAttribute("currentUser")).getIdUser();
+			int userId = ((User) s.getAttribute("currentUser")).getIdUser();
 			try {
-				
+
 				playlists = playlistDAO.getPlaylistsByUser(userId);
 				songs = songDAO.getSongsByUser(userId);
-				
-				
+
 			} catch (SQLException e) {
 				response.sendError(500, "Database access failed");
 			}
-					
-			
+
 			String username = request.getParameter("username");
 			String path = "/WEB-INF/homepage.html";
-			
+
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+
 			
-			if(((String) request.getAttribute("error")) != null) 
-				error = (String) request.getAttribute("error");
-			else if(((String) request.getAttribute("error1")) != null) 
-				error1 = (String) request.getAttribute("error1");
-			else if(((String) request.getAttribute("message")) != null)
-				message = (String) request.getAttribute("message");
-			
-			
-			ctx.setVariable("playlists" , playlists);
-			ctx.setVariable("errorMsg", error);
-			ctx.setVariable("errorMsg1", error1);
-			
-			ctx.setVariable("message",message);
-			
+			if (((String) request.getSession().getAttribute("errorFromCreatePlaylist")) != null)
+				errorFromCreatePlaylist = (String) request.getSession().getAttribute("errorFromCreatePlaylist");
+			if (((String) request.getSession().getAttribute("errorUploadingSong")) != null)
+				errorUploadingSong = (String) request.getSession().getAttribute("errorUploadingSong");
+			if (((String) request.getSession().getAttribute("errorFromGoToPlaylist")) != null)
+				errorFromGoToPlaylist = (String) request.getSession().getAttribute("errorFromGoToPlaylist");
+
+			ctx.setVariable("playlists", playlists);
 			ctx.setVariable("playlists", playlists);
 			ctx.setVariable("songsInThedb", songs);
 			ctx.setVariable("username", username);
+			
+			ctx.setVariable("errorFromCreatePlaylist", errorFromCreatePlaylist);
+			ctx.setVariable("errorUploadingSong", errorUploadingSong);
+			ctx.setVariable("errorFromGoToPlaylist", errorFromGoToPlaylist);
+			
 			templateEngine.process(path, ctx, response.getWriter());
+			
+			s.removeAttribute("error");
+			s.removeAttribute("errorUploadingSong");
+			s.removeAttribute("errorFromGoToPlaylist");
+			s.removeAttribute("errorFromCreatePlaylist");
+			
 		}
 	}
 

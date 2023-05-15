@@ -62,7 +62,7 @@ public class UploadSong extends HttpServlet {
 		String genre = request.getParameter("genre");
 		String albumTitle = request.getParameter("albumTitle");
 		String author = request.getParameter("author");
-		String date = request.getParameter("date");
+		String year = request.getParameter("date");
 		
 		Part albumImg = request.getPart("albumImg");
 		Part songFile = request.getPart("songFile");
@@ -81,19 +81,19 @@ public class UploadSong extends HttpServlet {
 		String error = "";
 		
 		if(songTitle == null || songTitle.isEmpty() || genre == null || genre.isEmpty() || albumTitle == null || albumTitle.isEmpty()
-				|| author == null || author.isEmpty() || date == null || date.isEmpty() 
+				|| author == null || author.isEmpty() || year == null || year.isEmpty() 
 				|| albumImg == null || albumImg.getSize() <= 0 || songFile == null || songFile.getSize() <= 0) {
 			error += "Missing parameters;";
 		}
 		
 		try {
-			publicationYear = Integer.parseInt(date);
+			publicationYear = Integer.parseInt(year);
 			
 			//Take the current year
 			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 			
 			//Check if the publicationYear is not bigger than the current year
-			if(publicationYear > currentYear)
+			if(publicationYear > currentYear || publicationYear < 0)
 				error += "Invalid date;";
 		}catch(NumberFormatException e) {
 			error += "Date not valid;";
@@ -112,7 +112,7 @@ public class UploadSong extends HttpServlet {
 		if(albumTitle.length() > 45)
 			error += "Album title too long;";
 		if(author.length() > 45)
-			error += "Singer name too long;";
+			error += "Author name too long;";
 		
 		//Take the type of the image file uploaded
 		String contentTypeImg = albumImg.getContentType();
@@ -140,9 +140,9 @@ public class UploadSong extends HttpServlet {
 			}	
 		}
 		
-		//If an error occurred, redirect with errorMsg1 to the template engine  
+		//If an error occurred, redirect with error1 to the template engine  
 		if(!error.equals("")) {
-			request.setAttribute("error1", error);
+			request.getSession().setAttribute("errorUploadingSong", error);
 			String path = "/GoToHomepage";
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
@@ -183,7 +183,7 @@ public class UploadSong extends HttpServlet {
 		
 		//If an error occurred, redirect with errorMsg1 to the template engine  
 		if(!error.equals("")) {
-			request.setAttribute("error1", error);
+			request.setAttribute("errorUploadingSong", error);
 			String path = "/GoToHomepage";
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
@@ -253,7 +253,7 @@ public class UploadSong extends HttpServlet {
 				file.delete();
 				
 				error += "Impossible upload file in the database , try later";
-				request.setAttribute("error1", error);
+				request.setAttribute("errorUloadingSong", error);
 				String path = getServletContext().getContextPath() + "/GoToHomepage";
 
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
