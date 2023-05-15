@@ -6,27 +6,27 @@
 <link rel="stylesheet" href="loginstyle.css"
 	th:href="@{/loginstyle.css}">
 </head>
-<div class="center">
-
-	<h1>Login</h1>
-	<form action="CheckLogin" method="post">
-
-		<div class="txt_field">
-			<input type="text" name="username" required> <label>Username</label>
-		</div>
-		<div class="txt_field">
-			<input type="password" name="password" required> <label>Password</label>
-		</div>
-
-		<div>
-			<p th:class="error" th:if="${error}" th:text="${error}"></p>
-		</div>
-
-		<input type="submit" value="Login">
-
-	</form>
-
-</div>
 <body>
+	<div class="center">
+
+		<h1>Login</h1>
+			<form action="CheckLogin" method="post">
+	
+				<div class="txt_field">
+					<input type="text" name="username" required> <label>Username</label>
+				</div>
+				<div class="txt_field">
+					<input type="password" name="password" required> <label>Password</label>
+				</div>
+	
+				<div>
+					<p th:class="error" th:if="${error}" th:text="${error}"></p>
+				</div>
+	
+				<input type="submit" value="Login">
+	
+			</form>
+
+	</div>
 </body>
 </html>
