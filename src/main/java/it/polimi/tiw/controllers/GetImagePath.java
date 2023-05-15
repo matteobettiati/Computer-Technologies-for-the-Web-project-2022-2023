@@ -82,7 +82,7 @@ public class GetImagePath extends HttpServlet{
 		}
 		
 		//Open the file
-		File file = new File(folderPath, filename);
+		File file = new File(folderPath, filename.replaceFirst("\\d+_", ""));
 		
 		if (!file.exists() || file.isDirectory()) {
 			return;

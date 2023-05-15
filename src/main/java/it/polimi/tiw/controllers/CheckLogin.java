@@ -14,9 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.UserDAO;
@@ -25,6 +22,7 @@ import it.polimi.tiw.dao.UserDAO;
 public class CheckLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
+	@SuppressWarnings("unused")
 	private TemplateEngine templateEngine;
 
 	public void init() throws ServletException {
@@ -51,6 +49,7 @@ public class CheckLogin extends HttpServlet {
 			throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		@SuppressWarnings("unused")
 		boolean error = false;
 
 		if (username == null || password == null) {
