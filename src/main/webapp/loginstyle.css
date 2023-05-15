@@ -10,6 +10,9 @@ body {
 	text-align: center;
 	background-color: #F1E9D9;
 }
+.error {
+	color: #ff0000;
+}
 
 form {
 	background-color: #E8DCCA;

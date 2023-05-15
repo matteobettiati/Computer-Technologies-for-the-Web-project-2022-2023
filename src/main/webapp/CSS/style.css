@@ -1,0 +1,60 @@
+h1 {
+	font-family: Geneva, Verdana, sans-serif;
+	position: relative;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+body {
+	text-align: center;
+	background-color: #F1E9D9;
+}
+
+fieldset {
+	margin-right: 60px;
+	width: 250px;
+	margin: auto;
+}
+
+img {
+	height: 100px;
+	width: 100px;
+}
+
+table, th, td {
+	border: 1px solid black;
+	margin: auto;
+}
+
+.simpleTable {
+	border: 0px;
+}
+
+td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+.playlistTable, .createPlaylistField, .createSongField {
+	margin: 10px;
+}
+
+.error {
+	color: #ff0000;
+}
+
+.before {
+	position: relative;
+	left: -170px;
+}
+
+.next {
+	position: relative;
+	left: 350px;
+}

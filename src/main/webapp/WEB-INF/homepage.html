@@ -4,7 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Home</title>
-<link rel="stylesheet" href="homepagestyle.css">
+<link rel="stylesheet" type="text/css" media="all" href="CSS/style.css" th:href="@{/CSS/style.css}" />
+
 </head>
 
 <body>
@@ -16,103 +17,101 @@
 		<a th:href="@{Logout}">Logout</a>
 	</div>
 	<br>
-
-	<fieldset class="createSongField">
-		<form th:action="@{/UploadSong}" method="POST"
-			enctype="multipart/form-data">
-			Add a new song in your Database<br>
-			<p>
-				Title: <input type="text" id="title" name="title" required>
-			</p>
-			<p>
-				Genre: <select id="genre" name="genre" required>
-					<option value="Classic">Classic</option>
-					<option value="Pop">Pop</option>
-					<option value="Rap">Rap</option>
-					<option value="Rock">Rock</option>
-					<option value="Jazz">Jazz</option>
-				</select>
-			</p>
-			<p>
-				Album title: <input type="text" id="albumTitle" name="albumTitle">
-
-			</p>
-			<p>
-				Author: <input type="text" id="author" name="author" required>
-			</p>
-			<p>
-				Album publication year: <input type="number" id="date" name="date"
-					required>
-			</p>
-			<p>
-				Album image: <input type="file" name="albumImg" accept="image/*"
-					required>
-			</p>
-			<p>
-				MP3 file: <input type="file" name="songFile" accept="audio/*"
-					required>
-			</p>
-			<p>
-				<input type="submit" value="submit">
-			</p>
-			<p th:class="error" th:text="${errorUploadingSong}">
-		</form>
-	</fieldset>
-	<br>
-	<br>
-
-	<div th:class="playlistTable" th:if="${#lists.isEmpty(playlists)}">
-		No playList yet</div>
-	<div th:class="playlistTable" th:if="${not #lists.isEmpty(playlists)}">
-		<table>
-			<thead>
-				<tr>
-					<th>PlayList name</th>
-					<th>Creation date</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="p : ${playlists}">
-					<td><a
-						th:href="@{GoToPlaylistPage(playlistId = ${p.idPlaylist} , block=0)}">
-							<span th:text="${p.title}"></span>
-					</a></td>
-					<td><span
-						th:text="${#dates.format(p.creationDate , 'dd.MM.yyyy')}"></span></td>
-				</tr>
-			</tbody>
-		</table>
-		<p th:class="error" th:text="${errorFromGoToPlaylist}"></p>
-	</div>
-
-	<br>
-	<br>
-	<fieldset th:class="createPlaylistField">
-		<form th:action="@{/CreatePlaylist}" method="POST">
-			Create a new playList<br>
-			<p>
-				Title: <input type="text" id="title" name="title" required>
-			</p>
-			<fieldset>
-				<label for="song">Add a song:</label>
-				<div style="max-height: 100px; overflow-y: scroll;">
-					<div th:each="s : ${songsInThedb}">
-						<input type="checkbox" th:value="${s.title}" name="songs"
-							id="song" /> <label th:for="song" th:text="${s.title}"></label>
-					</div>
-				</div>
+	<div class="container">
+		<fieldset class="createSongField">
+			<form th:action="@{/UploadSong}" method="POST"
+				enctype="multipart/form-data">
+				Add a new song in your Database<br>
 				<p>
-					<input type="submit" value="save" name="save">
+					Title: <input type="text" id="title" name="title" required>
 				</p>
-				<p th:class="error" th:text="${errorFromCreatePlaylist}"></p>
-			</fieldset>
-		</form>
-	</fieldset>
+				<p>
+					Genre: <select id="genre" name="genre" required>
+						<option value="Classic">Classic</option>
+						<option value="Pop">Pop</option>
+						<option value="Rap">Rap</option>
+						<option value="Rock">Rock</option>
+						<option value="Jazz">Jazz</option>
+					</select>
+				</p>
+				<p>
+					Album title: <input type="text" id="albumTitle" name="albumTitle">
+
+				</p>
+				<p>
+					Author: <input type="text" id="author" name="author" required>
+				</p>
+				<p>
+					Album publication year: <input type="number" id="date" name="date"
+						required>
+				</p>
+				<p>
+					Album image: <input type="file" name="albumImg" accept="image/*"
+						required>
+				</p>
+				<p>
+					MP3 file: <input type="file" name="songFile" accept="audio/*"
+						required>
+				</p>
+				<p>
+					<input type="submit" value="submit">
+				</p>
+				<p th:class="error" th:text="${errorUploadingSong}">
+			</form>
+		</fieldset>
+		<br> <br>
+
+		<div th:class="playlistTable" th:if="${#lists.isEmpty(playlists)}">
+			No playList yet</div>
+		<div th:class="playlistTable" th:if="${not #lists.isEmpty(playlists)}">
+			<table>
+				<thead>
+					<tr>
+						<th>PlayList name</th>
+						<th>Creation date</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="p : ${playlists}">
+						<td><a
+							th:href="@{GoToPlaylistPage(playlistId = ${p.idPlaylist} , block=0)}">
+								<span th:text="${p.title}"></span>
+						</a></td>
+						<td><span
+							th:text="${#dates.format(p.creationDate , 'dd.MM.yyyy')}"></span></td>
+					</tr>
+				</tbody>
+			</table>
+			<p th:class="error" th:text="${errorFromGoToPlaylist}"></p>
+		</div>
+
+		<br> <br>
+		<fieldset th:class="createPlaylistField">
+			<form th:action="@{/CreatePlaylist}" method="POST">
+				Create a new playList<br>
+				<p>
+					Title: <input type="text" id="title" name="title" required>
+				</p>
+				<fieldset>
+					<label for="song">Add a song:</label>
+					<div style="max-height: 100px; overflow-y: scroll;">
+						<div th:each="s : ${songsInThedb}">
+							<input type="checkbox" th:value="${s.title}" name="songs"
+								id="song" /> <label th:for="song" th:text="${s.title}"></label>
+						</div>
+					</div>
+					<p>
+						<input type="submit" value="save" name="save">
+					</p>
+					<p th:class="error" th:text="${errorFromCreatePlaylist}"></p>
+				</fieldset>
+			</form>
+		</fieldset>
 
 
 
 
-
+	</div>
 
 
 </body>
