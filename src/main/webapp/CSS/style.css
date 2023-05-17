@@ -45,6 +45,10 @@ td {
 	margin: 10px;
 }
 
+.createPlaylistField, .createSongField {
+	background-color: #E8DCCA;
+}
+
 .error {
 	color: #ff0000;
 }
