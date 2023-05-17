@@ -2,15 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>LoginPage</title>
-
+<link rel="stylesheet" type="text/css" media="all" href="loginstyle.css"
+	th:href="@{loginstyle.css}" />
 </head>
 <div class="center">
 	<h1>Login</h1>
 	<form action="CheckLogin" method="post">
-		<div>
+		<div class="txt_field">
 			<input type="text" name="username" required> <label>Username</label>
 		</div>
-		<div>
+		<div class="txt_field">
 			<input type="password" name="password" required> <label>Password</label>
 		</div>
 
@@ -18,12 +19,13 @@
 			<p th:class="error" th:if="${error}" th:text="${error}"></p>
 		</div>
 
-		<input type="submit" value="Login">
+		<div class="signup">
+			<input type="submit" value="Login"><br><br> <a href="signupPage.html">Crea
+				Un Nuovo Account</a>
+		</div>
 
 	</form>
-	<div>
-		<a href="signupPage.html">Crea Un Nuovo Account</a>
-	</div>
+
 
 
 
