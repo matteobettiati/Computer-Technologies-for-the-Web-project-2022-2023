@@ -65,9 +65,8 @@ public class GoToHomepage extends HttpServlet {
 		String errorFromCreatePlaylist = "";
 		String errorUploadingSong = "";
 		String errorFromGoToPlaylist= "";
-		String message = "";
 		
-		HttpSession s = request.getSession(false); //
+		HttpSession s = request.getSession(false); 
 		if (s == null || s.getAttribute("currentUser") == null) { // controls if user is NOT logged in
 			String path = getServletContext().getContextPath();
 			response.sendRedirect(path);
@@ -100,7 +99,6 @@ public class GoToHomepage extends HttpServlet {
 			if (((String) request.getSession().getAttribute("errorFromGoToPlaylist")) != null)
 				errorFromGoToPlaylist = (String) request.getSession().getAttribute("errorFromGoToPlaylist");
 
-			ctx.setVariable("playlists", playlists);
 			ctx.setVariable("playlists", playlists);
 			ctx.setVariable("songsInThedb", songs);
 			ctx.setVariable("username", username);
