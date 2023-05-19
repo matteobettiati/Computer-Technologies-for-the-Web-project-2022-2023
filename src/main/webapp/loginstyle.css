@@ -1,6 +1,6 @@
 h1 {
 	font-family: Geneva, Verdana, sans-serif;
-	position: fixed;
+	position: relative;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	top: 30%;
