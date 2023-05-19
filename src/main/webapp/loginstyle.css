@@ -1,9 +1,9 @@
 h1 {
 	font-family: Geneva, Verdana, sans-serif;
-	position: relative;
+	position: fixed;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	top: 30%;
+	top: 20%;
 }
 
 body {
