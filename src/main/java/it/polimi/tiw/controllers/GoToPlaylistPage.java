@@ -124,18 +124,8 @@ public class GoToPlaylistPage extends HttpServlet {
 			return;
 		}
 		
-		
-		if(s.getAttribute("errorFromAddSong") != null) {
-			error += (String) s.getAttribute("errorFromAddSong");
-		}
-		//Take the error in case of forward from GoToPlayerPage
-		else if(s.getAttribute("errorFromGoToPlayer") != null) {
-			error1 += (String) s.getAttribute("errorFromGoToPlayer");
-		}
-		
 	
-		SongDAO songDao = new SongDAO(connection);
-				
+		SongDAO songDao = new SongDAO(connection);		
 		//To take the title of the playList
 		PlaylistDAO playlistDao = new PlaylistDAO(connection);
 				
@@ -176,6 +166,14 @@ public class GoToPlaylistPage extends HttpServlet {
 			String path = "/WEB-INF/playlistPage.html";
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request , response , servletContext , request.getLocale());
+			
+			if(s.getAttribute("errorFromAddSong") != null) {
+				error += (String) s.getAttribute("errorFromAddSong");
+			}
+			//Take the error in case of forward from GoToPlayerPage
+			else if(s.getAttribute("errorFromGoToPlayer") != null) {
+				error1 += (String) s.getAttribute("errorFromGoToPlayer");
+			}
 			
 			ctx.setVariable("user" , user);
 			

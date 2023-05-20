@@ -19,14 +19,15 @@ import javax.servlet.http.HttpSession;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.SongDAO;
 
-@WebServlet("/GetAudioPath/*")
-public class GetAudioPath extends HttpServlet{
+@WebServlet("/GetImagePath/*")
+public class GetImage extends HttpServlet{
+	
 	private static final long serialVersionUID = 1L;
-	String songFilePath = "";
+	String folderPath = "";
 	private Connection connection;
 	
 	public void init() {
-		songFilePath = getServletContext().getInitParameter("songFilePath");
+		folderPath = getServletContext().getInitParameter("albumImgPath");
 		
 		try {
 			//Initializing the connection
@@ -61,13 +62,19 @@ public class GetAudioPath extends HttpServlet{
 			return;
 		}
 		
+		//Check if the path info is valid
+		if (pathInfo == null || pathInfo.equals("/")) {
+			//Set an error and return nothing
+			return;
+		}
+		
 		//Take the fileName from the pathInfo without the "/" character
 		String filename = URLDecoder.decode(pathInfo.substring(1), "UTF-8");
-
+		
 		SongDAO sDao = new SongDAO(connection);
 		
 		try {
-			if(!sDao.findSongByAudioAndUserId(filename, user.getIdUser())) {
+			if(!sDao.findSongByImageAndUserId(filename, user.getIdUser())) {
 				return;
 			}
 		}catch(SQLException e) {
@@ -75,7 +82,7 @@ public class GetAudioPath extends HttpServlet{
 		}
 		
 		//Open the file
-		File file = new File(songFilePath, filename);
+		File file = new File(folderPath, filename.replaceFirst("\\d+_", ""));
 		
 		if (!file.exists() || file.isDirectory()) {
 			return;
@@ -92,6 +99,7 @@ public class GetAudioPath extends HttpServlet{
 		
 		//Copy the file to the output stream
 		Files.copy(file.toPath(), response.getOutputStream());
+		
 	}
 	
 	public void destroy() {

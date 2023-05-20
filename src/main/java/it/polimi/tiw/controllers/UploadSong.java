@@ -1,4 +1,4 @@
-	package it.polimi.tiw.controllers;
+package it.polimi.tiw.controllers;
 
 import java.io.File;	
 import java.io.IOException;
@@ -140,7 +140,7 @@ public class UploadSong extends HttpServlet {
 			}	
 		}
 		
-		//If an error occurred, redirect with error1 to the template engine  
+		//If an error occurred, redirect with errorUploadingSong to the template engine  
 		if(!error.equals("")) {
 			request.getSession().setAttribute("errorUploadingSong", error);
 			String path = "/GoToHomepage";
@@ -172,7 +172,7 @@ public class UploadSong extends HttpServlet {
 		}
 
 		
-		//In case of future error the software will be delete the new song only if it is completely new
+		//In case of future error the software will delete the new song only if it is completely new
 		File tempFile = new File(outputPathImg);
 		if(tempFile.exists())
 			isReplaced = true;
@@ -181,7 +181,7 @@ public class UploadSong extends HttpServlet {
 		if(tempFile.exists())
 			error += "Song name already exists; ";
 		
-		//If an error occurred, redirect with errorMsg1 to the template engine  
+		//If an error occurred, redirect with errorUploadingSong to the template engine  
 		if(!error.equals("")) {
 			request.setAttribute("errorUploadingSong", error);
 			String path = "/GoToHomepage";
@@ -202,9 +202,9 @@ public class UploadSong extends HttpServlet {
 			}
 		}
 		
-		//If an error occurred, redirect with errorMsg1 to the template engine  
+		//If an error occurred, redirect with errorUploadingSong to the template engine  
 		if(!error.equals("")) {
-			request.setAttribute("error1", error);
+			request.setAttribute("errorUploadingSong", error);
 			String path = "/GoToHomepage";
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);
@@ -221,9 +221,9 @@ public class UploadSong extends HttpServlet {
 			error += "Error in uploading the music file;\n";
 		}
 		
-		//If an error occurred, redirect with errorMsg1 to the template engine  
+		//If an error occurred, redirect with errorUploadingSong to the template engine  
 		if(!error.equals("")) {
-			request.setAttribute("error1", error);
+			request.setAttribute("errorUploadingSong", error);
 			String path = "/GoToHomepage";
 
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(path);

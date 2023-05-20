@@ -19,15 +19,14 @@ import javax.servlet.http.HttpSession;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.dao.SongDAO;
 
-@WebServlet("/GetImagePath/*")
-public class GetImagePath extends HttpServlet{
-	
+@WebServlet("/GetAudioPath/*")
+public class GetAudio extends HttpServlet{
 	private static final long serialVersionUID = 1L;
-	String folderPath = "";
+	String songFilePath = "";
 	private Connection connection;
 	
 	public void init() {
-		folderPath = getServletContext().getInitParameter("albumImgPath");
+		songFilePath = getServletContext().getInitParameter("songFilePath");
 		
 		try {
 			//Initializing the connection
@@ -62,19 +61,13 @@ public class GetImagePath extends HttpServlet{
 			return;
 		}
 		
-		//Check if the path info is valid
-		if (pathInfo == null || pathInfo.equals("/")) {
-			//Set an error and return nothing
-			return;
-		}
-		
 		//Take the fileName from the pathInfo without the "/" character
 		String filename = URLDecoder.decode(pathInfo.substring(1), "UTF-8");
-		
+
 		SongDAO sDao = new SongDAO(connection);
 		
 		try {
-			if(!sDao.findSongByImageAndUserId(filename, user.getIdUser())) {
+			if(!sDao.findSongByAudioAndUserId(filename, user.getIdUser())) {
 				return;
 			}
 		}catch(SQLException e) {
@@ -82,7 +75,7 @@ public class GetImagePath extends HttpServlet{
 		}
 		
 		//Open the file
-		File file = new File(folderPath, filename.replaceFirst("\\d+_", ""));
+		File file = new File(songFilePath, filename);
 		
 		if (!file.exists() || file.isDirectory()) {
 			return;
@@ -99,7 +92,6 @@ public class GetImagePath extends HttpServlet{
 		
 		//Copy the file to the output stream
 		Files.copy(file.toPath(), response.getOutputStream());
-		
 	}
 	
 	public void destroy() {
