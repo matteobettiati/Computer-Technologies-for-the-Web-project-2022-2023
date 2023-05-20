@@ -75,7 +75,7 @@ public class GetAudioPath extends HttpServlet{
 		}
 		
 		//Open the file
-		File file = new File(songFilePath, filename.substring(2));
+		File file = new File(songFilePath, filename);
 		
 		if (!file.exists() || file.isDirectory()) {
 			return;
