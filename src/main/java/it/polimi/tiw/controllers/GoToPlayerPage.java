@@ -126,9 +126,7 @@ public class GoToPlayerPage extends HttpServlet{
 			dispatcher.forward(request,response);
 			return;
 		}
-		
-		//User can be here 
-		
+				
 		//To take song and playList details 
 		SongDAO sDao = new SongDAO(connection); 
 		PlaylistDAO pDao = new PlaylistDAO(connection);
@@ -137,7 +135,7 @@ public class GoToPlayerPage extends HttpServlet{
 			Song song = sDao.getSongInfo(songIdParsed);
 			Playlist playlist = new Playlist();
 			playlist.setIdPlaylist(playlistIdParsed);
-			playlist.setIdUser(playlistIdParsed);
+			playlist.setIdUser(user.getIdUser());
 			playlist.setTitle(pDao.getPlaylistTitle(playlistIdParsed));
 			
 			String path = "/WEB-INF/playerPage.html";
