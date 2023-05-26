@@ -132,7 +132,7 @@ public class GoToPlaylistPage extends HttpServlet {
 		//Take the titles and the image paths
 		try {
 					
-			ArrayList<Song> songsInPlaylist = songDao.getSongsInPlaylist(playlistIdParsed);
+			ArrayList<Song> songsInBlock = songDao.getSongsInBlock(playlistIdParsed, blockParsed);
 			ArrayList<Song> songsNotInPlaylist = songDao.getSongsNotInPlaylist(playlistIdParsed , user.getIdUser());
 			
 			String title = playlistDao.getPlaylistTitle(playlistIdParsed);
@@ -143,18 +143,15 @@ public class GoToPlaylistPage extends HttpServlet {
 			if(blockParsed > 0)
 				previous = true;
 			
-			if(blockParsed*SONGS_PER_BLOCK + SONGS_PER_BLOCK > songsInPlaylist.size()) {
-				blockParsed = (songsInPlaylist.size() / SONGS_PER_BLOCK);
-			}
-			if((blockParsed*SONGS_PER_BLOCK + SONGS_PER_BLOCK) < songsInPlaylist.size()) {
+			if(!songDao.getSongsInBlock(playlistIdParsed, blockParsed + 1).isEmpty())
 				next = true;
-			}
+			
 			
 			ArrayList<Song> songsPerBlock = new ArrayList<Song>();
 			
-			if(songsInPlaylist.size() > 0) {
-				for(int i = (blockParsed * SONGS_PER_BLOCK) ; i < (blockParsed * SONGS_PER_BLOCK + SONGS_PER_BLOCK) && i < songsInPlaylist.size(); i++){
-					Song song = songsInPlaylist.get(i);
+			if(songsInBlock.size() > 0) {
+				for(int i = 0; i < songsInBlock.size(); i++){
+					Song song = songsInBlock.get(i);
 					songsPerBlock.add(song);
 				}	
 			}
@@ -177,7 +174,6 @@ public class GoToPlaylistPage extends HttpServlet {
 			
 			ctx.setVariable("user" , user);
 			
-			ctx.setVariable("songsInPlaylist", songsInPlaylist);
 			ctx.setVariable("songsNotInPlaylist", songsNotInPlaylist);
 			ctx.setVariable("songsPerBlock", songsPerBlock);
 			
