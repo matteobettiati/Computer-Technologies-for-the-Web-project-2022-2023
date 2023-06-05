@@ -17,7 +17,7 @@
 		<a th:href="@{Logout}">Logout</a>
 	</div>
 	<br>
-	<div class="container">
+	<fieldset class="container">
 		<fieldset class="createSongField">
 			<form th:action="@{/UploadSong}" method="POST"
 				enctype="multipart/form-data">
@@ -87,7 +87,7 @@
 
 		<br> <br>
 		<fieldset th:class="createPlaylistField">
-			<form th:action="@{/CreatePlaylist}" method="POST">
+			<form th:action="@{/CreatePlaylist}" method="POST" th:if="${not #lists.isEmpty(songsInThedb)}">
 				Create a new playList<br>
 				<p>
 					Title: <input type="text" id="title" name="title" required>
@@ -106,12 +106,13 @@
 					<p th:class="error" th:text="${errorFromCreatePlaylist}"></p>
 				</fieldset>
 			</form>
+			<div th:if="${#lists.isEmpty(songsInThedb)}"><p>No songs yet</p></div>
 		</fieldset>
 
 
 
 
-	</div>
+	</fieldset>
 
 
 </body>
