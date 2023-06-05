@@ -5,8 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>PlayList page</title>
-<link rel="stylesheet" type="text/css" media="all"
-	href="CSS/style.css" th:href="@{/CSS/style.css}" />
+<link rel="stylesheet" type="text/css" media="all" href="CSS/style.css"
+	th:href="@{/CSS/style.css}" />
 </head>
 
 <body>
@@ -32,17 +32,17 @@
 					<td th:each="s : ${songsPerBlock}">
 						<table class=simpleTable>
 							<tbody>
-								
+								<tr>
+									<td><img
+										th:src="@{GetImagePath/{image}(image = ${s.getImage()})}"></td>
+								</tr>
 								<tr>
 									<td><a
 										th:href="@{GoToPlayerPage(songId=${s.getIDSong()} , playlistId=${playlist.getIdPlaylist()} , block=${block})}">
 											<span th:text="${s.getTitle()}">fileAudio</span>
 									</a></td>
 								</tr>
-								<tr>
-									<td><img
-										th:src="@{GetImagePath/{image}(image = ${s.getImage()})}" ></td>
-								</tr>
+
 							</tbody>
 						</table>
 					</td>
@@ -72,8 +72,8 @@
 			<form th:action="@{/AddSong(playlistId=${playlist.getIdPlaylist()})}"
 				method="POST">
 				<select id="song" name="song">
-					<option th:each="s : ${songsNotInPlaylist}" th:value="${s.getIDSong()}"
-						th:text="${s.getTitle()}">song</option>
+					<option th:each="s : ${songsNotInPlaylist}"
+						th:value="${s.getIDSong()}" th:text="${s.getTitle()}">song</option>
 				</select>
 				<p>
 					<input type="submit" value="submit">

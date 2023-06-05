@@ -1,3 +1,9 @@
+*{
+    margin: 5px;
+    padding:5px;
+    box-sizing: border-box;
+}
+
 h1 {
 	font-family: Geneva, Verdana, sans-serif;
 	position: relative;
@@ -30,15 +36,15 @@ table, th, td {
 	border: 0px;
 }
 
-td {
-	text-align: center;
-	vertical-align: middle;
-}
 
 .container {
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
+}
+
+.songsTable{
+	border:none;
 }
 
 .playlistTable, .createPlaylistField, .createSongField {
@@ -61,4 +67,10 @@ td {
 .next {
 	position: relative;
 	left: 350px;
+}
+
+.logout{
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }

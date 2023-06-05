@@ -52,7 +52,7 @@ public class UserDAO {
 
 	public boolean checkUsername(String username) throws SQLException {
 		
-		String query = "SELECT * FROM user WHERE username = ?";
+		String query = "SELECT ID FROM user WHERE username = ?";
 		ResultSet result = null;
 		PreparedStatement pstatement = null;
 		
