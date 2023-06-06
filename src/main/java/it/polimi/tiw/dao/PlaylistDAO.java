@@ -59,7 +59,7 @@ public class PlaylistDAO {
 	}
 
 	public boolean getPlaylistByID(int playlistID) throws SQLException {
-		String query = "SELECT ID FROM playlist WHERE ID = ?";
+		String query = "SELECT * FROM playlist WHERE ID = ?";
 		ResultSet result = null;
 		PreparedStatement pstatement = null;
 
@@ -93,7 +93,7 @@ public class PlaylistDAO {
 	}
 	
 	public String getPlaylistTitle(int playlistId) throws SQLException{
-		String query = "SELECT title FROM playlist WHERE ID = ?";
+		String query = "SELECT * FROM playlist WHERE ID = ?";
 		String result = "";
 		ResultSet resultSet = null;
 		PreparedStatement pStatement = null;
@@ -158,7 +158,7 @@ public class PlaylistDAO {
 
 	public boolean findPlaylistByTitle(String title, int userId) throws SQLException {
 
-		String query = "SELECT ID FROM playlist WHERE title = ? AND userID = ?";
+		String query = "SELECT * FROM playlist WHERE title = ? AND userID = ?";
 		boolean result = false;
 		ResultSet resultSet = null;
 		PreparedStatement pStatement = null;
@@ -195,7 +195,7 @@ public class PlaylistDAO {
 
 	public boolean findPlaylistById(int playlistId, int userId) throws SQLException {
 
-		String query = "SELECT ID FROM playlist WHERE ID = ? AND userID = ?";
+		String query = "SELECT * FROM playlist WHERE ID = ? AND userID = ?";
 		boolean result = false;
 		ResultSet resultSet = null;
 		PreparedStatement pStatement = null;

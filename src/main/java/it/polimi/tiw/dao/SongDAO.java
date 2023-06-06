@@ -92,7 +92,7 @@ public class SongDAO {
 	}
 
 	public int getSongID(String song) throws SQLException {
-		String query = "SELECT ID FROM song WHERE title = ?";
+		String query = "SELECT * FROM song WHERE title = ?";
 		PreparedStatement pStatement = null;
 		ResultSet resultSet = null;
 		int songID = 0;
@@ -121,7 +121,7 @@ public class SongDAO {
 
 	public List<Song> getSongsByUser(int userID) throws SQLException {
 		List<Song> songs = new ArrayList<>();
-		String query = "SELECT title FROM song WHERE userID = ?";
+		String query = "SELECT * FROM song WHERE userID = ?";
 		ResultSet result = null;
 		PreparedStatement pstatement = null;
 
@@ -157,7 +157,7 @@ public class SongDAO {
 	}
 
 	public ArrayList<Song> getSongsInBlock(int playlistId, int block) throws SQLException{
-		String query = "	SELECT song.ID, song.title, song.albumImagePath FROM song WHERE song.ID IN (SELECT contains.songID FROM contains WHERE contains.playlistID = ?) ORDER BY song.publicationYear DESC LIMIT 5 OFFSET ?;";
+		String query = "	SELECT song.* FROM song WHERE song.ID IN (SELECT contains.songID FROM contains WHERE contains.playlistID = ?) ORDER BY song.publicationYear DESC LIMIT 5 OFFSET ?;";
 		PreparedStatement pStatement = null;
 		ResultSet resultSet = null;
 		ArrayList<Song> songs = new ArrayList<Song>();
@@ -200,7 +200,7 @@ public class SongDAO {
 	}
 
 	public ArrayList<Song> getSongsNotInPlaylist(int playlistId, int userId) throws SQLException {
-		String query = "SELECT ID, Title FROM song WHERE userID = ? AND ID NOT IN ("
+		String query = "SELECT * FROM song WHERE userID = ? AND ID NOT IN ("
 				+ "SELECT songID FROM contains WHERE playlistID = ?)";
 		ResultSet resultSet = null;
 		PreparedStatement pStatement = null;
@@ -241,7 +241,7 @@ public class SongDAO {
 	}
 
 	public boolean findSongByImageAndUserId(String imagePath, int userId) throws SQLException {
-		String query = "SELECT ID FROM song WHERE albumImagePath = ? AND userID = ?";
+		String query = "SELECT * FROM song WHERE albumImagePath = ? AND userID = ?";
 		boolean result = false;
 		PreparedStatement pStatement = null;
 		ResultSet resultSet = null;
@@ -278,7 +278,7 @@ public class SongDAO {
 	}
 
 	public boolean findSongByAudioAndUserId(String audioPath, int userId) throws SQLException {
-		String query = "SELECT ID FROM song WHERE fileAudioPath = ? AND userID = ?";
+		String query = "SELECT * FROM song WHERE fileAudioPath = ? AND userID = ?";
 		boolean result = false;
 		PreparedStatement pStatement = null;
 		ResultSet resultSet = null;
@@ -315,7 +315,7 @@ public class SongDAO {
 	}
 
 	public boolean findSongByUserId(int songId, int userId) throws SQLException {
-		String query = "SELECT ID FROM song WHERE ID = ? AND userID = ?";
+		String query = "SELECT * FROM song WHERE ID = ? AND userID = ?";
 		boolean result = false;
 		PreparedStatement pStatement = null;
 		ResultSet resultSet = null;
