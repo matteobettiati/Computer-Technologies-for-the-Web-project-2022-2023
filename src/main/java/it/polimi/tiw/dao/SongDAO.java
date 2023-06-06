@@ -91,8 +91,8 @@ public class SongDAO {
 		return (code > 0);
 	}
 
-	public int getSongID(String song) throws SQLException {
-		String query = "SELECT * FROM song WHERE title = ?";
+	public int getSongID(String song, int userId) throws SQLException {
+		String query = "SELECT * FROM song WHERE title = ? AND userId = ?";
 		PreparedStatement pStatement = null;
 		ResultSet resultSet = null;
 		int songID = 0;
@@ -100,6 +100,7 @@ public class SongDAO {
 		try {
 			pStatement = connection.prepareStatement(query);
 			pStatement.setString(1, song);
+			pStatement.setInt(1, userId);
 
 			resultSet = pStatement.executeQuery();
 			if (resultSet.next()) {
@@ -156,16 +157,17 @@ public class SongDAO {
 
 	}
 
-	public ArrayList<Song> getSongsInBlock(int playlistId, int block) throws SQLException{
-		String query = "	SELECT song.* FROM song WHERE song.ID IN (SELECT contains.songID FROM contains WHERE contains.playlistID = ?) ORDER BY song.publicationYear DESC LIMIT 5 OFFSET ?;";
+	public ArrayList<Song> getSongsInBlock(int playlistId, int block, int userId) throws SQLException{
+		String query = "	SELECT song.* FROM song WHERE song.userID = ? AND song.ID IN (SELECT contains.songID FROM contains WHERE contains.playlistID = ?) ORDER BY song.publicationYear DESC LIMIT 5 OFFSET ?;";
 		PreparedStatement pStatement = null;
 		ResultSet resultSet = null;
 		ArrayList<Song> songs = new ArrayList<Song>();
 		
 		try {
 			pStatement = connection.prepareStatement(query);
-			pStatement.setInt(1, playlistId);
-			pStatement.setInt(2, 5*block);
+			pStatement.setInt(1, userId);
+			pStatement.setInt(2, playlistId);
+			pStatement.setInt(3, 5*block);
 			
 			resultSet = pStatement.executeQuery();
 			
@@ -176,6 +178,7 @@ public class SongDAO {
 				song.setIDSong(resultSet.getInt("song.ID"));
 				song.setTitle(resultSet.getString("song.title"));
 				song.setImage(resultSet.getString("song.albumImagePath"));//Set the name of the image file
+				song.setUserId(resultSet.getInt("song.userID"));
 				songs.add(song);
 			}
 		}catch(SQLException e) {

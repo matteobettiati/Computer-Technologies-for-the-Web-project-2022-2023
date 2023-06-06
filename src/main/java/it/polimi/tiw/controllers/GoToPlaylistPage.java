@@ -132,7 +132,7 @@ public class GoToPlaylistPage extends HttpServlet {
 		//Take the titles and the image paths
 		try {
 					
-			ArrayList<Song> songsInBlock = songDao.getSongsInBlock(playlistIdParsed, blockParsed);
+			ArrayList<Song> songsInBlock = songDao.getSongsInBlock(playlistIdParsed, blockParsed, user.getIdUser());
 			ArrayList<Song> songsNotInPlaylist = songDao.getSongsNotInPlaylist(playlistIdParsed , user.getIdUser());
 			
 			String title = playlistDao.getPlaylistTitle(playlistIdParsed);
@@ -143,7 +143,7 @@ public class GoToPlaylistPage extends HttpServlet {
 			if(blockParsed > 0)
 				previous = true;
 			
-			if(!songDao.getSongsInBlock(playlistIdParsed, blockParsed + 1).isEmpty())
+			if(!songDao.getSongsInBlock(playlistIdParsed, blockParsed + 1, user.getIdUser()).isEmpty())
 				next = true;
 			
 			

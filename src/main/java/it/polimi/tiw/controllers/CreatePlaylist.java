@@ -96,7 +96,7 @@ public class CreatePlaylist extends HttpServlet {
 					int playlistID = playlistDAO.getLastID();
 					// add song and check if they are already present
 					for (String song : songs) {
-						int songID = songDAO.getSongID(song);
+						int songID = songDAO.getSongID(song, user.getIdUser());
 						// insert into contains db
 						relate = playlistDAO.relateSong(songID, playlistID);
 						if (relate == false) {
